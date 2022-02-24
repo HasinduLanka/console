@@ -19,6 +19,7 @@ func ReadLine() string {
 	Scanner.Scan()
 	line := Scanner.Text()
 
+	line = strings.TrimSpace(line)
 	return line
 }
 
