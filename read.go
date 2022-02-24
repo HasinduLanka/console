@@ -2,7 +2,6 @@ package console
 
 import (
 	"bufio"
-	"encoding/json"
 	"os"
 	"strings"
 )
@@ -10,8 +9,10 @@ import (
 var Scanner *bufio.Scanner = nil
 var ScannerFile *os.File = nil
 
-var Writter *bufio.Writer = nil
-var WritterFile *os.File = nil
+func ScanFromStandardInput() {
+	CloneScannerFile()
+	Scanner = bufio.NewScanner(os.Stdin)
+}
 
 func ScanFromFile(filename string) error {
 	file, err := os.Open(filename)
@@ -29,7 +30,7 @@ func ScanFromFile(filename string) error {
 }
 
 func CloneScannerFile() error {
-	Scanner = bufio.NewScanner(os.Stdin)
+	Scanner = nil
 	if ScannerFile != nil {
 		f := ScannerFile
 		ScannerFile = nil
@@ -42,7 +43,7 @@ func CloneScannerFile() error {
 func ReadLine() string {
 
 	if Scanner == nil {
-		Scanner = bufio.NewScanner(os.Stdin)
+		ScanFromStandardInput()
 	}
 
 	Scanner.Scan()
@@ -102,72 +103,4 @@ func ReadPairs(sep string, skip int) map[string]string {
 	}
 
 	return Out
-}
-
-func WriteToFile(filename string) error {
-
-	if WritterFile != nil {
-		WritterFile.Close()
-	}
-
-	file, err := os.Create(filename)
-	if err != nil {
-		return err
-	}
-
-	WritterFile = file
-	Writter = bufio.NewWriter(file)
-	return nil
-
-}
-
-func CloneWritterFile() error {
-	Writter = bufio.NewWriter(os.Stdout)
-	if WritterFile != nil {
-		f := WritterFile
-		WritterFile = nil
-		return f.Close()
-	}
-	return nil
-}
-
-// Print a string and a new line
-func Print(S string) {
-	PrintInline(S + "\n")
-}
-
-// Print a string without a new line
-func PrintInline(S string) {
-	if Writter == nil {
-		Writter = bufio.NewWriter(os.Stdout)
-	}
-
-	Writter.WriteString(S)
-	Writter.Flush()
-}
-
-// Print any object as a json, spaced and indented
-func Log(Obj interface{}) {
-	B, JErr := json.MarshalIndent(Obj, "", "\t")
-
-	if JErr != nil {
-		return
-	}
-
-	S := string(B)
-
-	Print(S)
-}
-
-// Print any object as a single line json
-func LogLine(Obj interface{}) {
-	B, JErr := json.Marshal(Obj)
-
-	if JErr != nil {
-		return
-	}
-
-	S := string(B)
-
-	Print(S)
 }
