@@ -104,20 +104,6 @@ func ReadPairs(sep string, skip int) map[string]string {
 	return Out
 }
 
-// Print a string and a new line
-func Print(S string) {
-	PrintInline(S + "\n")
-}
-
-// Print a string without a new line
-func PrintInline(S string) {
-	if Writter == nil {
-		Writter = bufio.NewWriter(os.Stdout)
-	}
-
-	Writter.WriteString(S + "\n")
-}
-
 func WriteToFile(filename string) error {
 
 	if WritterFile != nil {
@@ -143,6 +129,21 @@ func CloneWritterFile() error {
 		return f.Close()
 	}
 	return nil
+}
+
+// Print a string and a new line
+func Print(S string) {
+	PrintInline(S + "\n")
+}
+
+// Print a string without a new line
+func PrintInline(S string) {
+	if Writter == nil {
+		Writter = bufio.NewWriter(os.Stdout)
+	}
+
+	Writter.WriteString(S)
+	Writter.Flush()
 }
 
 // Print any object as a json, spaced and indented
