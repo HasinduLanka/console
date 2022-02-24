@@ -98,7 +98,16 @@ func ReadPairs(sep string, skip int) map[string]string {
 
 	Out := make(map[string]string, (len(A)-skip)/2)
 
-	for i := skip; i < len(A); i += 2 {
+	lenA := len(A)
+
+	if (len(A)-skip)%2 == 1 {
+		// odd number of entries
+		lenA--
+
+		Out[A[lenA]] = ""
+	}
+
+	for i := skip; i < lenA; i += 2 {
 		Out[A[i]] = A[i+1]
 	}
 
