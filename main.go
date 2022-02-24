@@ -29,6 +29,19 @@ func ReadArray(sep string) []string {
 	return A
 }
 
+func ReadArrayClean(sep string) []string {
+	A := ReadArray(sep)
+	Out := make([]string, 0, len(A))
+
+	for _, S := range A {
+		if (len(S) > 0) && (S != sep) {
+			Out = append(Out, S)
+		}
+	}
+
+	return Out
+}
+
 func Print(S string) {
 	fmt.Println(S)
 }
