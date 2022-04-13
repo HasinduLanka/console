@@ -1,6 +1,6 @@
 package console
 
-var GlobalReader *Reader
+var GlobalReader *Reader = NewReaderFromStandardInput()
 
 func ScanFromStandardInput() {
 	GlobalReader.ScanFromStandardInput()

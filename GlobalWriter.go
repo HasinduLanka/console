@@ -1,6 +1,6 @@
 package console
 
-var GlobalWriter *Writer
+var GlobalWriter *Writer = NewWriterToStandardOutput()
 
 func WriteToStandardOutput() {
 	GlobalWriter.WriteToStandardOutput()
