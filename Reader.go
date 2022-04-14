@@ -133,3 +133,10 @@ func (rd *Reader) ReadPairs(sep string, skip int) map[string]string {
 
 	return Out
 }
+
+func (rd *Reader) ReadBoolean(possitiveResponse string) bool {
+	S := strings.ToLower(rd.ReadLine())
+	possitiveResponse = strings.ToLower(possitiveResponse)
+
+	return S == possitiveResponse
+}
