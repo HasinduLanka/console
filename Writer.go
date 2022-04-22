@@ -2,7 +2,6 @@ package console
 
 import (
 	"bufio"
-	"encoding/json"
 	"os"
 	"strings"
 )
@@ -78,11 +77,6 @@ func (wr *Writer) CloseWritterFile() error {
 	return nil
 }
 
-// Print a string and a new line
-func (wr *Writer) Print(S string) {
-	wr.PrintInline(S + "\n")
-}
-
 // Print a string without a new line
 func (wr *Writer) PrintInline(S string) {
 	if wr.Buff == nil {
@@ -91,30 +85,4 @@ func (wr *Writer) PrintInline(S string) {
 
 	wr.Buff.WriteString(S)
 	wr.Buff.Flush()
-}
-
-// Print any object as a json, spaced and indented
-func (wr *Writer) Log(Obj interface{}) {
-	B, JErr := json.MarshalIndent(Obj, "", "\t")
-
-	if JErr != nil {
-		return
-	}
-
-	S := string(B)
-
-	wr.Print(S)
-}
-
-// Print any object as a single line json
-func (wr *Writer) LogLine(Obj interface{}) {
-	B, JErr := json.Marshal(Obj)
-
-	if JErr != nil {
-		return
-	}
-
-	S := string(B)
-
-	wr.Print(S)
 }
